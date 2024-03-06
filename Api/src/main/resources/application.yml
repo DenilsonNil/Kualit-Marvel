@@ -13,6 +13,9 @@ spring:
         secret-key: test
       secretsmanager:
         endpoint: http://localhost:4566
+      sns:
+        enabled: true
+        endpoint: http://localhost:4566
     openfeign:
       client:
         config:
@@ -20,4 +23,8 @@ spring:
             url: https://gateway.marvel.com:443
   config:
     import: "aws-secretsmanager:client-credentials"
+
+sns:
+  topicArn: arn:aws:sns:us-east-1:000000000000:character-picture-topic
+
 

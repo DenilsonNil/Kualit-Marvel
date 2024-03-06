@@ -19,9 +19,21 @@ public class MarvelCharacterService {
     public static final String FILE_EXTESION_SEPARATOR = ".";
     private final MarvelAuthService clientAuthService;
     private final MarvelClientFeignInterface clientFeignInterface;
+    private final SnsService snsService;
     public byte[] getCharacterPicture(String characterName) {
-        return convertImageToByteArray(prepareClientResponse(characterName));
+        val clientResponse = prepareClientResponse(characterName);
+
+        val imagePath = clientResponse.path();
+        val imageExtension = clientResponse.extension();
+
+        snsService.notify(getImageURI(imagePath, imageExtension), "character picture downloaded sucessfully!");
+        return convertImageToByteArray(imagePath, imageExtension);
     }
+
+    private String getImageURI(String clientResponse, String clientResponse1) {
+        return concat(clientResponse, FILE_EXTESION_SEPARATOR, clientResponse1);
+    }
+
     private Thumbnail prepareClientResponse(String characterName) {
         return callClient(characterName)
                 .data()
@@ -32,8 +44,8 @@ public class MarvelCharacterService {
     private MarvelCharacterDataResponse callClient(String characterName) {
         return clientFeignInterface.getCharacterData(clientAuthService.getClientMandatoryParams(characterName));
     }
-    private byte[] convertImageToByteArray(Thumbnail clientResponse) {
-        val imageURI = concat(clientResponse.path(), FILE_EXTESION_SEPARATOR, clientResponse.extension());
+    private byte[] convertImageToByteArray(String path, String extension) {
+        val imageURI = getImageURI(path, extension);
         return new RestTemplate().getForObject(imageURI, byte[].class);
     }
 }
