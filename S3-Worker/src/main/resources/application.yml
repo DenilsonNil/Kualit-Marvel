@@ -14,8 +14,13 @@ spring:
       sqs:
         enabled: true
         endpoint: http://localhost:4566
+      s3:
+        enabled: true
+        endpoint: http://s3.localhost.localstack.cloud:4566/
 sqs:
   queue-name: character-picture-queue
+s3:
+  bucket-name: marvel-characters-pictures
 
 
 

@@ -26,7 +26,7 @@ public class MarvelCharacterService {
         val imagePath = clientResponse.path();
         val imageExtension = clientResponse.extension();
 
-        snsService.notify(getImageURI(imagePath, imageExtension), "character picture downloaded sucessfully!");
+        snsService.notify(getImageURI(imagePath, imageExtension), characterName);
         return convertImageToByteArray(imagePath, imageExtension);
     }
 
