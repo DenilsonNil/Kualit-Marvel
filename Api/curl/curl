@@ -1,0 +1,3 @@
+## Call API to get an image of some character.
+
+curl --location 'localhost:8081/api/v1/marvelcharacter/hulk'

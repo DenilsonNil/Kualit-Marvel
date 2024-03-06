@@ -1,0 +1,23 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: kualit-marvel
+  cloud:
+    aws:
+      region:
+        static: us-east-1
+      credentials:
+        access-key: test
+        secret-key: test
+      secretsmanager:
+        endpoint: http://localhost:4566
+    openfeign:
+      client:
+        config:
+          feignName:
+            url: https://gateway.marvel.com:443
+  config:
+    import: "aws-secretsmanager:client-credentials"
+
