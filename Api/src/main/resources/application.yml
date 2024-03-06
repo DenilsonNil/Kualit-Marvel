@@ -22,7 +22,7 @@ spring:
           feignName:
             url: https://gateway.marvel.com:443
   config:
-    import: "aws-secretsmanager:client-credentials"
+    import: "aws-secretsmanager:/secret/client-credentials"
 
 sns:
   topicArn: arn:aws:sns:us-east-1:000000000000:character-picture-topic
