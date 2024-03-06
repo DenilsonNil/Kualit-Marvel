@@ -1,0 +1,22 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: kualit-marvel-s3-worker
+  cloud:
+    aws:
+      region:
+        static: us-east-1
+      credentials:
+        access-key: test
+        secret-key: test
+      sqs:
+        enabled: true
+        endpoint: http://localhost:4566
+sqs:
+  queue-name: character-picture-queue
+
+
+
+

@@ -18,6 +18,7 @@
 
     <modules>
         <module>Api</module>
+        <module>S3-Worker</module>
     </modules>
 
     <description>Kualit-Marvel</description>
