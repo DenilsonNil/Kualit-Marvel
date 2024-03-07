@@ -24,8 +24,8 @@ public class SQSListener {
 
     @SqsListener("${sqs.queue-name}")
     public void read(String message) throws IOException {
-        val sqsMessage = mapper.readValue(message, SQSMessage.class);
-        log.info("image URI: {} ", sqsMessage.message());
-        s3Service.sendFileToS3(sqsMessage.subject(), sqsMessage.message());
+        val sqsMessage = mapper.readValue(message, SQSMessage.class).message();
+        log.info("image URI: {} ", sqsMessage);
+        s3Service.sendFileToS3(sqsMessage);
     }
 }

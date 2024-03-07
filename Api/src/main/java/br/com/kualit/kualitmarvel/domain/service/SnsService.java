@@ -1,5 +1,6 @@
 package br.com.kualit.kualitmarvel.domain.service;
 
+import br.com.kualit.kualitmarvel.domain.request.CharacterSNSMessage;
 import io.awspring.cloud.sns.core.SnsTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ public class SnsService {
     SnsService(SnsTemplate snsTemplate) {
         this.snsTemplate = snsTemplate;
     }
-    public void notify(String payload, String subject){
-        snsTemplate.sendNotification(topicArn, payload, subject);
+    public void notify(CharacterSNSMessage payload){
+        snsTemplate.sendNotification(topicArn, payload, payload.characterName());
     }
 }

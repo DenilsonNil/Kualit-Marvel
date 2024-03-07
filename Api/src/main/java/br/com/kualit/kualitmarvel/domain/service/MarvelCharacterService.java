@@ -2,6 +2,7 @@ package br.com.kualit.kualitmarvel.domain.service;
 
 import br.com.kualit.kualitmarvel.client.MarvelAuthService;
 import br.com.kualit.kualitmarvel.client.MarvelClientFeignInterface;
+import br.com.kualit.kualitmarvel.domain.request.CharacterSNSMessage;
 import br.com.kualit.kualitmarvel.domain.response.MarvelCharacterDataResponse;
 import br.com.kualit.kualitmarvel.domain.response.Thumbnail;
 import lombok.AllArgsConstructor;
@@ -26,12 +27,16 @@ public class MarvelCharacterService {
         val imagePath = clientResponse.path();
         val imageExtension = clientResponse.extension();
 
-        snsService.notify(getImageURI(imagePath, imageExtension), characterName);
-        return convertImageToByteArray(imagePath, imageExtension);
+        sendSNSNotification(characterName, imagePath, imageExtension);
+        return convertImageToByteArray(imagePath, imageExtension, characterName);
     }
 
-    private String getImageURI(String clientResponse, String clientResponse1) {
-        return concat(clientResponse, FILE_EXTESION_SEPARATOR, clientResponse1);
+    private void sendSNSNotification(String characterName, String imagePath, String imageExtension) {
+        snsService.notify(getSnsMessagePayload(imagePath, imageExtension, characterName));
+    }
+
+    private CharacterSNSMessage getSnsMessagePayload(String imagePath, String fileExtension, String characterName) {
+        return new CharacterSNSMessage(concat(imagePath, FILE_EXTESION_SEPARATOR, fileExtension), characterName);
     }
 
     private Thumbnail prepareClientResponse(String characterName) {
@@ -44,8 +49,8 @@ public class MarvelCharacterService {
     private MarvelCharacterDataResponse callClient(String characterName) {
         return clientFeignInterface.getCharacterData(clientAuthService.getClientMandatoryParams(characterName));
     }
-    private byte[] convertImageToByteArray(String path, String extension) {
-        val imageURI = getImageURI(path, extension);
+    private byte[] convertImageToByteArray(String path, String extension, String characterName) {
+        val imageURI = getSnsMessagePayload(path, extension, characterName).imageUri();
         return new RestTemplate().getForObject(imageURI, byte[].class);
     }
 }
