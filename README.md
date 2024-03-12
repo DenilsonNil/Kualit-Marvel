@@ -18,7 +18,7 @@ docker-compose up -d
 4. Run these commands to create a new user to access localstack
 
 ```yml
- aws configure --profile localstck set aws_access_key_id test
+ aws configure --profile localstack set aws_access_key_id test
  aws configure --profile localstack set aws_secret_access_key test
 ```
 5. Run this command to create a client-credentials in the aws-secret-manager:
